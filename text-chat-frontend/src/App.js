@@ -1,36 +1,28 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   ChakraProvider,
   Box,
-  Text,
-  Link,
-  VStack,
-  Code,
   Grid,
   theme
 } from '@chakra-ui/react'
 import { ColorModeSwitcher } from './ColorModeSwitcher'
+import RoomsList from './pages/RoomsList'
+import ChatRoom from './pages/ChatRoom'
+import UserLoginModal from './components/UserLoginModal/UserLoginModal'
+import { UserContext } from './user'
 
 function App () {
+  const { username, updateUsername, chatRoom } = useContext(UserContext)
+
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
+      <Box fontSize='xl'>
+        <Grid minH='100vh' p={3}>
+          <ColorModeSwitcher justifySelf='flex-end' />
+          <UserLoginModal isOpen={username === null} loginUser={(user) => updateUsername(user)} />
+          {
+            chatRoom === null ? <RoomsList /> : <ChatRoom />
+          }
         </Grid>
       </Box>
     </ChakraProvider>
